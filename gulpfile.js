@@ -16,23 +16,23 @@ var gulp           = require("gulp"),
 var config = {
     paths: {
         html: {
-            src:  "src/**/*.html",
+            src:  "app/**/*.html",
             dest: "build"
         },
         javascript: {
-            src:  ["src/js/**/*.js"],
+            src:  ["app/js/**/*.js"],
             dest: "build/js"
         },
         css: {
-            src: ["src/css/**/*.css"],
+            src: ["app/css/**/*.css"],
             dest: "build/css"
         },
         images: {
-            src: ["src/images/**/*.jpg", "src/images/**/*.jpeg", "src/images/**/*.png"],
+            src: ["app/images/**/*.jpg", "app/images/**/*.jpeg", "app/images/**/*.png"],
             dest: "build/images"
         },
         less: {
-            src: ["src/less/**/*.less", "!src/less/includes/**"],
+            src: ["app/less/**/*.less", "!app/less/includes/**"],
             dest: "build/css"
         },
         bower: {
@@ -40,7 +40,7 @@ var config = {
             dest: "build/lib"
         },
         verbatim: {
-            src: ["src/manifest.json", "src/favicon.png"],
+            src: ["app/manifest.json", "app/favicon.png"],
             dest: "build"
         }
     }
