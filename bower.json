@@ -1,8 +1,8 @@
 {
-  "name": "simple-gulp-template",
+  "name": "cms",
   "version": "1.0.0",
   "authors": [
-    "Jair Trejo <jair@jairtrejo.mx>"
+    "Jeremy Brayton <jeremy@braytonium.com>"
   ],
   "license": "MIT",
   "private": true,
