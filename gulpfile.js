@@ -9,6 +9,7 @@ var gulp           = require("gulp"),
   mainBowerFiles = require("main-bower-files"),
   inject         = require("gulp-inject"),
   less           = require("gulp-less"),
+  sass           = require("gulp-sass"),
   filter         = require("gulp-filter"),
   glob           = require("glob"),
   browserSync    = require("browser-sync");
@@ -33,6 +34,10 @@ var config = {
     },
     less: {
       src: ["app/less/**/*.less", "!app/less/includes/**"],
+      dest: "build/css"
+    },
+    sass: {
+      src: ["app/sass/**/*.scss", "!app/sass/includes/**"],
       dest: "build/css"
     },
     bower: {
@@ -107,6 +112,24 @@ gulp.task("less", function(){
     .pipe(browserSync.reload({stream: true}));
 });
 
+gulp.task("sass", function(){
+  return gulp.src(config.paths.sass.src)
+    .pipe(sourcemaps.init())
+    .pipe(sass({
+      outputStyle: "compressed",
+      includePaths: [ config.paths.bower.src + "/bootstrap-sass/assets/stylesheets", config.paths.bower.src + "/font-awesome/scss" ],
+      sourceComments: false
+    }).on("error", sass.logError))
+    .pipe(uncss({
+      html: glob.sync(config.paths.html.src),
+    }))
+    .pipe(concat("main.min.css"))
+    .pipe(sourcemaps.write("."))
+    .pipe(gulp.dest(config.paths.css.dest))
+    .pipe(filter("**/*.css"))
+    .pipe(browserSync.reload({stream: true}));
+});
+
 gulp.task("verbatim", function(){
   gulp.src(config.paths.verbatim.src)
     .pipe(gulp.dest(config.paths.verbatim.dest));
@@ -131,4 +154,5 @@ gulp.task("default", ["build", "browser-sync"], function(){
 
   gulp.watch(config.paths.css.src, ["css"]);
   gulp.watch(config.paths.less.src, ["less"]);
+  //gulp.watch(config.paths.sass.src, ["sass"]);
 });

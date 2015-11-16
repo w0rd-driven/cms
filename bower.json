@@ -7,13 +7,21 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "font-awesome": "~4.2.0",
-    "bootstrap": "~3.3.0"
+    "font-awesome": "~4",
+    "bootstrap": "~3",
+    "bootstrap-sass": "~3"
   },
   "overrides": {
     "bootstrap": {
       "main": [
-        "dist/fonts/**", "dist/js/bootstrap.min.js"
+        "dist/fonts/**",
+        "dist/js/bootstrap.min.js"
+      ]
+    },
+    "bootstrap-sass": {
+      "main": [
+        "assets/fonts/bootstrap/**",
+        "assets/javascripts/bootstrap.min.js"
       ]
     }
   }

@@ -20,6 +20,7 @@
     "gulp-inject": "~1",
     "gulp-less": "~3",
     "gulp-minify-html": "~1",
+    "gulp-sass": "~2",
     "gulp-sourcemaps": "~1",
     "gulp-uglify": "~1",
     "gulp-uncss": "~1",
