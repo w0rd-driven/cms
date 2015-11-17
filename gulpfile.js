@@ -143,7 +143,7 @@ gulp.task("browser-sync", function() {
   });
 });
 
-gulp.task("build", ["bower", "html", "scripts", "css", "less", "images", "verbatim"]);
+gulp.task("build", ["bower", "html", "scripts", "css", "sass", "images", "verbatim"]);
 
 gulp.task("default", ["build", "browser-sync"], function(){
   gulp.watch(config.paths.html.src, ["html", browserSync.reload]);
@@ -153,6 +153,6 @@ gulp.task("default", ["build", "browser-sync"], function(){
   gulp.watch(config.paths.verbatim.src, ["verbatim", browserSync.reload]);
 
   gulp.watch(config.paths.css.src, ["css"]);
-  gulp.watch(config.paths.less.src, ["less"]);
-  //gulp.watch(config.paths.sass.src, ["sass"]);
+  //gulp.watch(config.paths.less.src, ["less"]);
+  gulp.watch(config.paths.sass.src, ["sass"]);
 });

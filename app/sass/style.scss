@@ -1,5 +1,5 @@
 @import "bootstrap";
-@import "font-awesome";
+//@import "font-awesome";
 
 $highlight: #CF0A2C;
 $background: #FFF;
@@ -29,7 +29,7 @@ a {
 }
 
 .cta {
-  .btn {}
-  .btn-lg {}
+  @extend .btn;
+  @extend .btn-lg;
   @include button-variant($background, $highlight, $highlight);
 }
