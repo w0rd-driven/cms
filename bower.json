@@ -24,6 +24,13 @@
         "assets/fonts/bootstrap/**",
         "assets/javascripts/bootstrap.min.js"
       ]
+    },
+    "font-awesome": {
+      "main": [
+        "fonts/**",
+        "css/font-awesome.min.css",
+        "css/font-awesome.css.map"
+      ]
     }
   }
 }
