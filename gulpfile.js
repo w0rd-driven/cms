@@ -55,7 +55,7 @@ gulp.task("html", function(){
   return gulp.src(config.paths.html.src)
     .pipe(inject(
       gulp.src(
-        mainBowerFiles(),
+        mainBowerFiles({ includeDev: true }),
         {read: false, cwd: "bower_components"}
       ),
       {name: "bower", addPrefix: "lib"}
@@ -92,7 +92,7 @@ gulp.task("images", function(){
 });
 
 gulp.task("bower", function(){
-  return gulp.src(mainBowerFiles(), {base: "bower_components"})
+  return gulp.src(mainBowerFiles({ includeDev: true }), {base: "bower_components"})
     .pipe(gulp.dest(config.paths.bower.dest));
 });
 
