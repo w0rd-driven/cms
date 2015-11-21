@@ -8,16 +8,16 @@
   "private": true,
   "dependencies": {
     "font-awesome": "~4",
-    "bootstrap": "~3",
+//    "bootstrap": "~3",
     "bootstrap-sass": "~3"
   },
   "overrides": {
-    "bootstrap": {
-      "main": [
-        "dist/fonts/**",
-        "dist/js/bootstrap.min.js"
-      ]
-    },
+//    "bootstrap": {
+//      "main": [
+//        "dist/fonts/**",
+//        "dist/js/bootstrap.min.js"
+//      ]
+//    },
     "bootstrap-sass": {
       "main": [
         "assets/fonts/bootstrap/**",
