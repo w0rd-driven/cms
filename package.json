@@ -11,6 +11,7 @@
   "devDependencies": {
     "bower": "~1",
     "browser-sync": "~2",
+    "del": "~2",
     "glob": "~4",
     "gulp": "~3",
     "gulp-concat": "~2",

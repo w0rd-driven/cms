@@ -2,7 +2,7 @@ var gulp = require("gulp");
 
 // Include plugins
 var plugins = require("gulp-load-plugins")({
-  pattern: ["gulp-*", "gulp.*", "main-bower-files", "glob", "browser-sync"],
+  pattern: ["gulp-*", "gulp.*", "main-bower-files", "del", "glob", "browser-sync"],
   replaceString: /\bgulp[\-.]/
 });
 
@@ -51,12 +51,16 @@ var config = {
   }
 };
 
-gulp.task("bower", function() {
+gulp.task("bower", ["clean"], function() {
   return gulp.src(plugins.mainBowerFiles({ includeDev: true }), { base: config.paths.bower.source })
     .pipe(gulp.dest(config.paths.bower.destination));
 });
 
-gulp.task("html", function() {
+gulp.task("clean", function () {
+  return plugins.del(["build/**"]);
+});
+
+gulp.task("html", ["javascript", "images", "fonts", "verbatim", "documentation", "css", "sass"], function() {
   return gulp.src(config.paths.html.source)
     .pipe(plugins.inject(gulp.src(plugins.mainBowerFiles({ includeDev: true }), { read: false, cwd: config.paths.bower.source }), {
       addRootSlash: false,
@@ -144,7 +148,7 @@ gulp.task("documentation", function () {
     .pipe(gulp.dest(config.paths.documentation.destination));
 });
 
-gulp.task("browser-sync", function() {
+gulp.task("browser-sync", ["bower"], function() {
   return plugins.browserSync({
     server: {
       baseDir: config.paths.html.destination
@@ -152,9 +156,7 @@ gulp.task("browser-sync", function() {
   });
 });
 
-gulp.task("build", ["bower", "html", "javascript", "images", "fonts", "verbatim", "documentation", "css", "sass"]);
-
-gulp.task("default", ["build", "browser-sync"], function() {
+gulp.task("watch", ["build"], function() {
   // Watch .html files
   gulp.watch(config.paths.html.source, ["html", plugins.browserSync.reload]);
   // Watch .js files
@@ -178,3 +180,11 @@ gulp.task("default", ["build", "browser-sync"], function() {
   // Watch bower files
   gulp.watch(config.paths.bower.source, ["bower", plugins.browserSync.reload]);
 });
+
+// We only run the node tasks, relying on their dependencies to finish first
+gulp.task("build", ["bower"], function () {
+  gulp.start("html");
+});
+
+// Default Task
+gulp.task("default", ["watch", "browser-sync"]);
