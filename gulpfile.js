@@ -51,14 +51,16 @@ var config = {
   }
 };
 
-gulp.task("bower", function(){
+gulp.task("bower", function() {
   return gulp.src(plugins.mainBowerFiles({ includeDev: true }), { base: config.paths.bower.source })
     .pipe(gulp.dest(config.paths.bower.destination));
 });
 
-gulp.task("html", function(){
+gulp.task("html", function() {
   return gulp.src(config.paths.html.source)
     .pipe(plugins.inject(gulp.src(plugins.mainBowerFiles({ includeDev: true }), { read: false, cwd: config.paths.bower.source }), {
+      addRootSlash: false,
+      ignorePath: config.paths.html.destination,
       name: "bower",
       addPrefix: "lib"
     }))
@@ -66,7 +68,7 @@ gulp.task("html", function(){
     .pipe(gulp.dest(config.paths.html.destination));
 });
 
-gulp.task("javascript", function(){
+gulp.task("javascript", function() {
   return gulp.src(config.paths.javascript.source)
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat("app.min.js"))
@@ -75,7 +77,7 @@ gulp.task("javascript", function(){
     .pipe(gulp.dest(config.paths.javascript.destination));
 });
 
-gulp.task("css", function(){
+gulp.task("css", function() {
   return gulp.src(config.paths.css.source)
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.cssmin())
@@ -84,7 +86,7 @@ gulp.task("css", function(){
     .pipe(plugins.browserSync.reload({stream: true}));
 });
 
-gulp.task("images", function(){
+gulp.task("images", function() {
   return gulp.src(config.paths.images.source)
     .pipe(plugins.imagemin({
       progressive: true,
@@ -93,7 +95,7 @@ gulp.task("images", function(){
     .pipe(gulp.dest(config.paths.images.destination));
 });
 
-gulp.task("less", function(){
+gulp.task("less", function() {
   return gulp.src(config.paths.less.source)
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.less({
@@ -109,7 +111,7 @@ gulp.task("less", function(){
     .pipe(plugins.browserSync.reload({stream: true}));
 });
 
-gulp.task("sass", function(){
+gulp.task("sass", function() {
   return gulp.src(config.paths.sass.source)
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.sass({
@@ -132,7 +134,7 @@ gulp.task("fonts", function () {
     .pipe(gulp.dest(config.paths.fonts.destination));
 });
 
-gulp.task("verbatim", function(){
+gulp.task("verbatim", function() {
   return gulp.src(config.paths.verbatim.source)
     .pipe(gulp.dest(config.paths.verbatim.destination));
 });
@@ -152,7 +154,7 @@ gulp.task("browser-sync", function() {
 
 gulp.task("build", ["bower", "html", "javascript", "images", "fonts", "verbatim", "documentation", "css", "sass"]);
 
-gulp.task("default", ["build", "browser-sync"], function(){
+gulp.task("default", ["build", "browser-sync"], function() {
   // Watch .html files
   gulp.watch(config.paths.html.source, ["html", plugins.browserSync.reload]);
   // Watch .js files
