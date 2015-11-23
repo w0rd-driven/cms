@@ -44,8 +44,16 @@ var config = {
       source: ["app/sass/**/*.scss", "!app/sass/includes/**"],
       destination: "build/css"
     },
+    fonts: {
+      source: ["app/fonts/**", "bower_components/font-awesome/fonts/**"],
+      destination: "build/fonts"
+    },
     verbatim: {
       source: ["app/manifest.json", "app/favicon.png"],
+      destination: "build"
+    },
+    documentation: {
+      source:  ["app/**/*.md"],
       destination: "build"
     }
   }
@@ -127,9 +135,19 @@ gulp.task("sass", function(){
     .pipe(browserSync.reload({stream: true}));
 });
 
+gulp.task("fonts", function () {
+  return gulp.src(config.paths.fonts.source)
+    .pipe(gulp.dest(config.paths.fonts.destination));
+});
+
 gulp.task("verbatim", function(){
   return gulp.src(config.paths.verbatim.source)
     .pipe(gulp.dest(config.paths.verbatim.destination));
+});
+
+gulp.task("documentation", function () {
+  return gulp.src(config.paths.documentation.source)
+    .pipe(gulp.dest(config.paths.documentation.destination));
 });
 
 gulp.task("browser-sync", function() {
@@ -140,7 +158,7 @@ gulp.task("browser-sync", function() {
   });
 });
 
-gulp.task("build", ["bower", "html", "javascript", "css", "sass", "images", "verbatim"]);
+gulp.task("build", ["bower", "html", "javascript", "images", "fonts", "verbatim", "documentation", "css", "sass"]);
 
 gulp.task("default", ["build", "browser-sync"], function(){
   // Watch .html files
@@ -149,8 +167,12 @@ gulp.task("default", ["build", "browser-sync"], function(){
   gulp.watch(config.paths.javascript.source, ["javascript", browserSync.reload]);
   // Watch image files
   gulp.watch(config.paths.images.source, ["images", browserSync.reload]);
+  // Watch font files
+  gulp.watch(config.paths.fonts.source, ["fonts", browserSync.reload]);
   // Watch for files we copy verbatim
   gulp.watch(config.paths.verbatim.source, ["verbatim", browserSync.reload]);
+  // Watch .md files
+  gulp.watch(config.paths.documentation.source, ["documentation", browserSync.reload]);
 
   // Watch .css files
   gulp.watch(config.paths.css.source, ["css"]);

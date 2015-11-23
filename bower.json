@@ -28,8 +28,8 @@
     "font-awesome": {
       "main": [
         "fonts/**",
-        "css/font-awesome.min.css",
-        "css/font-awesome.css.map"
+        "less/font-awesome.less",
+        "scss/font-awesome.scss"
       ]
     }
   }
