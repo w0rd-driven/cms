@@ -56,7 +56,7 @@ gulp.task("bower", ["clean"], function() {
     .pipe(gulp.dest(config.paths.bower.destination));
 });
 
-gulp.task("clean", function () {
+gulp.task("clean", function() {
   return plugins.del(["build/**"]);
 });
 
@@ -133,7 +133,7 @@ gulp.task("sass", function() {
     .pipe(plugins.browserSync.reload({stream: true}));
 });
 
-gulp.task("fonts", function () {
+gulp.task("fonts", function() {
   return gulp.src(config.paths.fonts.source)
     .pipe(gulp.dest(config.paths.fonts.destination));
 });
@@ -143,7 +143,7 @@ gulp.task("verbatim", function() {
     .pipe(gulp.dest(config.paths.verbatim.destination));
 });
 
-gulp.task("documentation", function () {
+gulp.task("documentation", function() {
   return gulp.src(config.paths.documentation.source)
     .pipe(gulp.dest(config.paths.documentation.destination));
 });
@@ -182,7 +182,7 @@ gulp.task("watch", ["build"], function() {
 });
 
 // We only run the node tasks, relying on their dependencies to finish first
-gulp.task("build", ["bower"], function () {
+gulp.task("build", ["bower"], function() {
   gulp.start("html");
 });
 
