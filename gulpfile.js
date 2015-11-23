@@ -1,18 +1,10 @@
-var gulp           = require("gulp"),
-  minifyHTML     = require("gulp-minify-html"),
-  concat         = require("gulp-concat"),
-  uglify         = require("gulp-uglify"),
-  cssmin         = require("gulp-cssmin"),
-  uncss          = require("gulp-uncss"),
-  imagemin       = require("gulp-imagemin"),
-  sourcemaps     = require("gulp-sourcemaps"),
-  mainBowerFiles = require("main-bower-files"),
-  inject         = require("gulp-inject"),
-  less           = require("gulp-less"),
-  sass           = require("gulp-sass"),
-  filter         = require("gulp-filter"),
-  glob           = require("glob"),
-  browserSync    = require("browser-sync");
+var gulp = require("gulp");
+
+// Include plugins
+var plugins = require("gulp-load-plugins")({
+  pattern: ["gulp-*", "gulp.*", "main-bower-files", "glob", "browser-sync"],
+  replaceString: /\bgulp[\-.]/
+});
 
 var config = {
   paths: {
@@ -60,41 +52,41 @@ var config = {
 };
 
 gulp.task("bower", function(){
-  return gulp.src(mainBowerFiles({ includeDev: true }), { base: config.paths.bower.source })
+  return gulp.src(plugins.mainBowerFiles({ includeDev: true }), { base: config.paths.bower.source })
     .pipe(gulp.dest(config.paths.bower.destination));
 });
 
 gulp.task("html", function(){
   return gulp.src(config.paths.html.source)
-    .pipe(inject(gulp.src(mainBowerFiles({ includeDev: true }), { read: false, cwd: config.paths.bower.source }), {
+    .pipe(plugins.inject(gulp.src(plugins.mainBowerFiles({ includeDev: true }), { read: false, cwd: config.paths.bower.source }), {
       name: "bower",
       addPrefix: "lib"
     }))
-    .pipe(minifyHTML())
+    .pipe(plugins.minifyHtml())
     .pipe(gulp.dest(config.paths.html.destination));
 });
 
 gulp.task("javascript", function(){
   return gulp.src(config.paths.javascript.source)
-    .pipe(sourcemaps.init())
-    .pipe(concat("app.min.js"))
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.concat("app.min.js"))
+    .pipe(plugins.uglify())
+    .pipe(plugins.sourcemaps.write())
     .pipe(gulp.dest(config.paths.javascript.destination));
 });
 
 gulp.task("css", function(){
   return gulp.src(config.paths.css.source)
-    .pipe(sourcemaps.init())
-    .pipe(cssmin())
-    .pipe(sourcemaps.write("."))
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.cssmin())
+    .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.css.destination))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(plugins.browserSync.reload({stream: true}));
 });
 
 gulp.task("images", function(){
   return gulp.src(config.paths.images.source)
-    .pipe(imagemin({
+    .pipe(plugins.imagemin({
       progressive: true,
       interlaced: true
     }))
@@ -103,36 +95,36 @@ gulp.task("images", function(){
 
 gulp.task("less", function(){
   return gulp.src(config.paths.less.source)
-    .pipe(sourcemaps.init())
-    .pipe(less({
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.less({
       paths: ["bower_components/bootstrap/less"]
     }))
-    .pipe(uncss({
-      html: glob.sync(config.paths.html.source),
+    .pipe(plugins.uncss({
+      html: plugins.glob.sync(config.paths.html.source),
     }))
-    .pipe(concat("main.min.css"))
-    .pipe(sourcemaps.write("."))
+    .pipe(plugins.concat("main.min.css"))
+    .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.css.destination))
-    .pipe(filter("**/*.css"))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(plugins.filter("**/*.css"))
+    .pipe(plugins.browserSync.reload({stream: true}));
 });
 
 gulp.task("sass", function(){
   return gulp.src(config.paths.sass.source)
-    .pipe(sourcemaps.init())
-    .pipe(sass({
+    .pipe(plugins.sourcemaps.init())
+    .pipe(plugins.sass({
       outputStyle: "compressed",
       includePaths: [ config.paths.bower.source + "/bootstrap-sass/assets/stylesheets", config.paths.bower.source + "/font-awesome/scss" ],
       sourceComments: false
-    }).on("error", sass.logError))
-    .pipe(uncss({
-      html: glob.sync(config.paths.html.source),
+    }).on("error", plugins.sass.logError))
+    .pipe(plugins.uncss({
+      html: plugins.glob.sync(config.paths.html.source),
     }))
-    .pipe(concat("main.min.css"))
-    .pipe(sourcemaps.write("."))
+    .pipe(plugins.concat("main.min.css"))
+    .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.css.destination))
-    .pipe(filter("**/*.css"))
-    .pipe(browserSync.reload({stream: true}));
+    .pipe(plugins.filter("**/*.css"))
+    .pipe(plugins.browserSync.reload({stream: true}));
 });
 
 gulp.task("fonts", function () {
@@ -151,7 +143,7 @@ gulp.task("documentation", function () {
 });
 
 gulp.task("browser-sync", function() {
-  return browserSync({
+  return plugins.browserSync({
     server: {
       baseDir: config.paths.html.destination
     }
@@ -162,17 +154,17 @@ gulp.task("build", ["bower", "html", "javascript", "images", "fonts", "verbatim"
 
 gulp.task("default", ["build", "browser-sync"], function(){
   // Watch .html files
-  gulp.watch(config.paths.html.source, ["html", browserSync.reload]);
+  gulp.watch(config.paths.html.source, ["html", plugins.browserSync.reload]);
   // Watch .js files
-  gulp.watch(config.paths.javascript.source, ["javascript", browserSync.reload]);
+  gulp.watch(config.paths.javascript.source, ["javascript", plugins.browserSync.reload]);
   // Watch image files
-  gulp.watch(config.paths.images.source, ["images", browserSync.reload]);
+  gulp.watch(config.paths.images.source, ["images", plugins.browserSync.reload]);
   // Watch font files
-  gulp.watch(config.paths.fonts.source, ["fonts", browserSync.reload]);
+  gulp.watch(config.paths.fonts.source, ["fonts", plugins.browserSync.reload]);
   // Watch for files we copy verbatim
-  gulp.watch(config.paths.verbatim.source, ["verbatim", browserSync.reload]);
+  gulp.watch(config.paths.verbatim.source, ["verbatim", plugins.browserSync.reload]);
   // Watch .md files
-  gulp.watch(config.paths.documentation.source, ["documentation", browserSync.reload]);
+  gulp.watch(config.paths.documentation.source, ["documentation", plugins.browserSync.reload]);
 
   // Watch .css files
   gulp.watch(config.paths.css.source, ["css"]);
@@ -182,5 +174,5 @@ gulp.task("default", ["build", "browser-sync"], function(){
   gulp.watch(config.paths.sass.source, ["sass"]);
 
   // Watch bower files
-  gulp.watch(config.paths.bower.source, ["bower", browserSync.reload]);
+  gulp.watch(config.paths.bower.source, ["bower", plugins.browserSync.reload]);
 });
