@@ -77,7 +77,7 @@ gulp.task("javascript", function() {
     .pipe(plugins.sourcemaps.init())
     .pipe(plugins.concat("app.min.js"))
     .pipe(plugins.uglify())
-    .pipe(plugins.sourcemaps.write())
+    .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.javascript.destination));
 });
 
@@ -108,7 +108,7 @@ gulp.task("less", function() {
     .pipe(plugins.uncss({
       html: plugins.glob.sync(config.paths.html.source),
     }))
-    .pipe(plugins.concat("main.min.css"))
+    .pipe(plugins.concat("style.min.css"))
     .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.css.destination))
     .pipe(plugins.filter("**/*.css"))
@@ -126,7 +126,7 @@ gulp.task("sass", function() {
     .pipe(plugins.uncss({
       html: plugins.glob.sync(config.paths.html.source),
     }))
-    .pipe(plugins.concat("main.min.css"))
+    .pipe(plugins.concat("style.min.css"))
     .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.css.destination))
     .pipe(plugins.filter("**/*.css"))
