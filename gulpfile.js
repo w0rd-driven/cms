@@ -30,7 +30,8 @@ var config = {
     sass: {
       outputStyle: "compressed",
       includePaths: [ "bower_components/bootstrap-sass/assets/stylesheets", "bower_components/font-awesome/scss" ],
-      sourceComments: false
+      sourceComments: false,
+      sourceMap: false
     },
     size: {
       showFiles: true
@@ -143,7 +144,7 @@ gulp.task("less", function() {
     }))
     .pipe(plugins.concat("style.min.css"))
     .pipe(plugins.sourcemaps.write("."))
-    .pipe(gulp.dest(config.paths.css.destination))
+    .pipe(gulp.dest(config.paths.less.destination))
     .pipe(plugins.filter(config.options.filter.css))
     .pipe(plugins.browserSync.reload({stream: true}));
 });
@@ -158,7 +159,7 @@ gulp.task("sass", function() {
     }))
     .pipe(plugins.concat("style.min.css"))
     .pipe(plugins.sourcemaps.write("."))
-    .pipe(gulp.dest(config.paths.css.destination))
+    .pipe(gulp.dest(config.paths.sass.destination))
     .pipe(plugins.filter(config.options.filter.css))
     .pipe(plugins.browserSync.reload({stream: true}));
 });
