@@ -145,6 +145,8 @@ gulp.task("less", function() {
     .pipe(plugins.concat("style.min.css"))
     .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.less.destination))
+    .pipe(plugins.size({ showFiles: config.options.size.showFiles, title: this.currentTask.name })
+      .on("error", plugins.util.log))
     .pipe(plugins.filter(config.options.filter.css))
     .pipe(plugins.browserSync.reload({stream: true}));
 });
@@ -160,6 +162,8 @@ gulp.task("sass", function() {
     .pipe(plugins.concat("style.min.css"))
     .pipe(plugins.sourcemaps.write("."))
     .pipe(gulp.dest(config.paths.sass.destination))
+    .pipe(plugins.size({ showFiles: config.options.size.showFiles, title: this.currentTask.name })
+      .on("error", plugins.util.log))
     .pipe(plugins.filter(config.options.filter.css))
     .pipe(plugins.browserSync.reload({stream: true}));
 });
